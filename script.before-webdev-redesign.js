@@ -807,36 +807,3 @@ document.querySelectorAll(".project-card").forEach((card) => {
   });
 })();
 
-
-
-/* ===== AEVRNN WEBX 3D TILT ===== */
-(function () {
-
-  const cards = document.querySelectorAll(".tilt-card");
-
-  cards.forEach(card => {
-
-    card.addEventListener("pointermove", e => {
-
-      if (window.innerWidth < 800) return;
-
-      const rect = card.getBoundingClientRect();
-
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const rotateY = ((x / rect.width) - .5) * 7;
-      const rotateX = ((y / rect.height) - .5) * -7;
-
-      card.style.transform =
-        `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-
-    });
-
-    card.addEventListener("pointerleave", () => {
-      card.style.transform = "";
-    });
-
-  });
-
-})();
