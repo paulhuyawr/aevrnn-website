@@ -386,216 +386,149 @@ document.addEventListener("DOMContentLoaded", () => {
      button if no key is configured.
   */
 
-  const YOUTUBE_API_KEY = "";
   const CHANNEL_HANDLE = "@aevrnnvfx";
 
   const youtubeContainer =
     document.getElementById("youtubeProjects");
 
-
-  function showYouTubeFallback() {
-
-    if (!youtubeContainer) return;
-
-    youtubeContainer.innerHTML = `
-
-      <div class="youtube-loading">
-
-        <div class="loader-ring"></div>
-
-        <span>
-          YOUTUBE PROJECT FEED READY
-        </span>
-
-        <a
-          href="https://youtube.com/@aevrnnvfx"
-          target="_blank"
-          rel="noopener"
-          class="btn btn-secondary"
-          style="margin-top:5px;"
-        >
-          VIEW LATEST EDITS ↗
-        </a>
-
-      </div>
-
-    `;
-
-  }
-
-
-  /*
-     Once the channel ID + API key are configured,
-     this function can populate the latest uploads.
-  */
-
   async function loadYouTubeProjects() {
 
     if (!youtubeContainer) return;
 
-    if (!YOUTUBE_API_KEY) {
-
-      showYouTubeFallback();
-
-      return;
-
-    }
+    youtubeContainer.innerHTML = `
+      <div class="youtube-loading">
+        <div class="loader-ring"></div>
+        <span>LOADING LATEST EDITS</span>
+      </div>
+    `;
 
     try {
 
-      /*
-        Search the channel by handle.
-      */
-
-      const channelResponse =
-        await fetch(
-          `https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${encodeURIComponent(CHANNEL_HANDLE)}&key=${YOUTUBE_API_KEY}`
-        );
-
-      if (!channelResponse.ok) {
-        throw new Error("Channel request failed");
-      }
-
-      const channelData =
-        await channelResponse.json();
-
-      const channelId =
-        channelData.items?.[0]?.id;
-
-      if (!channelId) {
-        throw new Error("Channel not found");
-      }
-
+      const rssUrl =
+        "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ";
 
       /*
-        Get latest uploaded videos.
-      */
-
-      const videoResponse =
-        await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&order=date&type=video&maxResults=6&key=${YOUTUBE_API_KEY}`
+       * Public RSS proxy.
+       * No YouTube API key is exposed in the website.
+       */
+      const proxy =
+        "https://api.allorigins.win/raw?url=" +
+        encodeURIComponent(
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ"
         );
 
-      if (!videoResponse.ok) {
-        throw new Error("Video request failed");
+      const response = await fetch(proxy);
+
+      if (!response.ok) {
+        throw new Error("Feed request failed");
       }
 
-      const videoData =
-        await videoResponse.json();
+      const xmlText = await response.text();
 
-      const videos =
-        videoData.items || [];
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, "text/xml");
 
+      const entries = [...xml.querySelectorAll("entry")];
 
-      if (!videos.length) {
-        showYouTubeFallback();
-        return;
+      if (!entries.length) {
+        throw new Error("No videos found");
       }
-
 
       youtubeContainer.innerHTML = "";
 
+      entries.slice(0, 3).forEach((entry) => {
 
-      videos.forEach((video) => {
-
-        const id = video.id.videoId;
+        const videoId =
+          entry.querySelector("videoId")?.textContent?.trim();
 
         const title =
-          video.snippet.title;
+          entry.querySelector("title")?.textContent?.trim() ||
+          "Latest Edit";
 
         const published =
-          new Date(
-            video.snippet.publishedAt
-          ).toLocaleDateString(
-            "en-IN",
-            {
-              day: "numeric",
-              month: "short",
-              year: "numeric"
-            }
-          );
+          entry.querySelector("published")?.textContent?.trim();
 
-        const thumbnail =
-          video.snippet.thumbnails?.high?.url ||
-          video.snippet.thumbnails?.medium?.url;
+        if (!videoId) return;
 
+        const date = published
+          ? new Date(published).toLocaleDateString(
+              undefined,
+              {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+              }
+            )
+          : "";
 
-        const card =
-          document.createElement("article");
+        const card = document.createElement("article");
 
-        card.className =
-          "youtube-card reveal show";
-
+        card.className = "youtube-project reveal";
 
         card.innerHTML = `
-
           <a
-            href="https://www.youtube.com/watch?v=${id}"
+            href="https://www.youtube.com/watch?v=${videoId}"
             target="_blank"
             rel="noopener"
-            class="youtube-thumb"
+            class="youtube-project-link"
           >
 
-            <img
-              src="${thumbnail}"
-              alt="${escapeHTML(title)}"
-              loading="lazy"
-            >
+            <div class="youtube-thumbnail">
+              <img
+                src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+                alt="${title.replace(/"/g, "&quot;")}"
+                loading="lazy"
+              >
 
-            <div class="youtube-play">
-              <span>▶</span>
+              <div class="youtube-play">▶</div>
+            </div>
+
+            <div class="youtube-project-info">
+              <span class="creator-type">LATEST EDIT</span>
+
+              <h3>${title}</h3>
+
+              <div class="youtube-project-meta">
+                <span>${date}</span>
+                <span>WATCH VIDEO ↗</span>
+              </div>
             </div>
 
           </a>
-
-          <div class="youtube-info">
-
-            <div class="youtube-badge">
-              YOUTUBE / EDITING
-            </div>
-
-            <h3>
-              ${escapeHTML(title)}
-            </h3>
-
-            <p>
-              ${published}
-            </p>
-
-          </div>
-
         `;
-
 
         youtubeContainer.appendChild(card);
 
       });
 
+      if (!youtubeContainer.children.length) {
+        throw new Error("Videos could not be rendered");
+      }
+
     } catch (error) {
 
       console.error(
-        "YouTube feed error:",
+        "[AEVRNN] YouTube feed error:",
         error
       );
 
-      showYouTubeFallback();
+      youtubeContainer.innerHTML = `
+        <div class="youtube-loading">
+          <span>YOUTUBE PROJECT FEED UNAVAILABLE</span>
 
+          <a
+            href="https://youtube.com/@aevrnnvfx"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-secondary"
+            style="margin-top:20px;"
+          >
+            VIEW LATEST EDITS ↗
+          </a>
+        </div>
+      `;
     }
-
   }
-
-
-  function escapeHTML(text) {
-
-    const div =
-      document.createElement("div");
-
-    div.textContent = text;
-
-    return div.innerHTML;
-
-  }
-
 
   loadYouTubeProjects();
 
