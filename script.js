@@ -867,6 +867,6 @@ document.querySelectorAll(".project-card").forEach((card) => {
       buttonText.textContent = "SEND MESSAGE";
       status.textContent = "Something went wrong. Please try again.";
     }
-  }););
+  });
 })();
 
