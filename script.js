@@ -768,7 +768,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 })();
 
-/* CLICKABLE PROJECT CARDS */
+/* CLICKABLE PROJECT CARDS - 2 SECOND DELAY */
 document.querySelectorAll(".project-card").forEach((card) => {
   const link = card.querySelector(".project-link");
 
@@ -777,7 +777,13 @@ document.querySelectorAll(".project-card").forEach((card) => {
 
     card.addEventListener("click", (e) => {
       if (e.target.closest("a")) return;
-      window.open(link.href, "_blank", "noopener");
+
+      card.classList.add("opening");
+
+      setTimeout(() => {
+        window.open(link.href, "_blank", "noopener");
+        card.classList.remove("opening");
+      }, 2000);
     });
   }
 });
