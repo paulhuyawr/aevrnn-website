@@ -394,34 +394,30 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadYouTubeProjects() {
     if (!youtubeContainer) return;
 
-    const playlistId = "UU0GcuqyFmqg5VaWPZzZx9SQ";
-
     youtubeContainer.innerHTML = `
-      <div class="youtube-direct-card">
-        <div class="youtube-direct-icon">▶</div>
-        <div class="youtube-direct-content">
-          <span class="creator-type">LATEST EDITS</span>
-          <h3>AEVRNNVFX</h3>
-          <p>Watch my latest editing projects, visuals and gaming edits.</p>
+      <div class="youtube-shorts-card reveal">
+        <div class="youtube-shorts-visual">
+          <div class="youtube-shorts-play">▶</div>
+          <div class="youtube-shorts-glow"></div>
+        </div>
+
+        <div class="youtube-shorts-content">
+          <span class="creator-type">EDITING / VISUALS</span>
+          <h3>Latest AEVRNNVFX Edits</h3>
+          <p>
+            Gaming edits, Shorts, visual projects and motion work.
+            Check out the latest uploads on my YouTube channel.
+          </p>
+
           <a
-            href="https://www.youtube.com/playlist?list=${playlistId}"
+            href="https://www.youtube.com/@aevrnnvfx/shorts"
             target="_blank"
             rel="noopener"
             class="btn btn-secondary"
           >
-            VIEW LATEST EDITS ↗
+            VIEW LATEST SHORTS ↗
           </a>
         </div>
-      </div>
-
-      <div class="youtube-embed-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/videoseries?list=${playlistId}"
-          title="AEVRNNVFX Latest Edits"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-        </iframe>
       </div>
     `;
   }
