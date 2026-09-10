@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.createElement("article");
 
         card.className =
-          "youtube-project reveal";
+          "youtube-card reveal";
 
         card.innerHTML = `
           <div class="youtube-project-card">

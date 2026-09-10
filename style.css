@@ -3046,3 +3046,122 @@ body.contact-modal-open {
   display: inline-flex;
 }
 
+
+/* ===== AEVRNN YOUTUBE API FEED FIX ===== */
+
+.youtube-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  margin-top: 25px;
+}
+
+.youtube-card {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  background: rgba(255,255,255,.025);
+  transition: .35s ease;
+}
+
+.youtube-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(165,0,255,.35);
+  box-shadow: 0 15px 45px rgba(165,0,255,.15);
+}
+
+.youtube-project-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.youtube-thumbnail-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+.youtube-thumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #12091a;
+}
+
+.youtube-thumbnail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+
+.youtube-card:hover .youtube-thumbnail img {
+  transform: scale(1.05);
+}
+
+.youtube-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.12);
+  color: white;
+  font-size: 24px;
+  text-shadow: 0 2px 15px rgba(0,0,0,.6);
+}
+
+.youtube-project-info {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  gap: 10px;
+}
+
+.youtube-project-info .creator-type {
+  display: block;
+  color: #b56cff;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.youtube-project-info h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.youtube-watch-btn {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+@media (max-width: 800px) {
+  .youtube-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .youtube-card {
+    width: 100%;
+  }
+
+  .youtube-project-info h3 {
+    font-size: 16px;
+  }
+}
+
+/* Keep loading/error visible */
+.youtube-loading,
+.youtube-error {
+  grid-column: 1 / -1;
+}
+
