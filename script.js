@@ -828,25 +828,45 @@ document.querySelectorAll(".project-card").forEach((card) => {
     }
   });
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const status = document.getElementById("contactFormStatus");
     const button = form.querySelector(".contact-submit");
+    const buttonText = button.querySelector("span");
 
     button.disabled = true;
-    button.querySelector("span").textContent = "SENDING...";
+    buttonText.textContent = "SENDING...";
+    status.textContent = "";
 
-    /*
-      EMAIL SERVICE WILL BE CONNECTED HERE.
-      The form UI is ready.
-    */
+    try {
+      const response = await fetch("https://formspree.io/f/xljezbyj", {
+        method: "POST",
+        body: new FormData(form),
+        headers: {
+          "Accept": "application/json"
+        }
+      });
 
-    setTimeout(() => {
-      status.textContent = "FORM READY — EMAIL SERVICE NOT CONNECTED YET.";
+      if (response.ok) {
+        buttonText.textContent = "MESSAGE SENT ✓";
+        status.textContent = "Thanks! I'll get back to you soon.";
+        form.reset();
+
+        setTimeout(() => {
+          closeModal();
+          buttonText.textContent = "SEND MESSAGE";
+          status.textContent = "";
+          button.disabled = false;
+        }, 2200);
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
       button.disabled = false;
-      button.querySelector("span").textContent = "SEND MESSAGE";
-    }, 700);
-  });
+      buttonText.textContent = "SEND MESSAGE";
+      status.textContent = "Something went wrong. Please try again.";
+    }
+  }););
 })();
 
