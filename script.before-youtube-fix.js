@@ -386,10 +386,13 @@ document.addEventListener("DOMContentLoaded", () => {
      button if no key is configured.
   */
 
+  const CHANNEL_HANDLE = "@aevrnnvfx";
+
   const youtubeContainer =
     document.getElementById("youtubeProjects");
 
   async function loadYouTubeProjects() {
+
     if (!youtubeContainer) return;
 
     youtubeContainer.innerHTML = `
@@ -400,27 +403,55 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     try {
-      const response = await fetch("/.netlify/functions/youtube");
+
+      const rssUrl =
+        "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ0GcuqyFmqg5VaWPZzZx9SQ";
+
+      /*
+       * Public RSS proxy.
+       * No YouTube API key is exposed in the website.
+       */
+      const proxy =
+        "https://api.allorigins.win/raw?url=" +
+        encodeURIComponent(
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ0GcuqyFmqg5VaWPZzZx9SQ"
+        );
+
+      const response = await fetch(proxy);
 
       if (!response.ok) {
         throw new Error("Feed request failed");
       }
 
-      const data = await response.json();
+      const xmlText = await response.text();
 
-      if (!data.videos || !data.videos.length) {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, "text/xml");
+
+      const entries = [...xml.querySelectorAll("entry")];
+
+      if (!entries.length) {
         throw new Error("No videos found");
       }
 
       youtubeContainer.innerHTML = "";
 
-      data.videos.slice(0, 3).forEach((video, index) => {
-        const card = document.createElement("article");
+      entries.slice(0, 3).forEach((entry) => {
 
-        card.className = "youtube-project reveal";
+        const videoId =
+          entry.querySelector("videoId")?.textContent?.trim();
 
-        const date = video.published
-          ? new Date(video.published).toLocaleDateString(
+        const title =
+          entry.querySelector("title")?.textContent?.trim() ||
+          "Latest Edit";
+
+        const published =
+          entry.querySelector("published")?.textContent?.trim();
+
+        if (!videoId) return;
+
+        const date = published
+          ? new Date(published).toLocaleDateString(
               undefined,
               {
                 day: "2-digit",
@@ -430,9 +461,13 @@ document.addEventListener("DOMContentLoaded", () => {
             )
           : "";
 
+        const card = document.createElement("article");
+
+        card.className = "youtube-project reveal";
+
         card.innerHTML = `
           <a
-            href="${video.url}"
+            href="https://www.youtube.com/watch?v=${videoId}"
             target="_blank"
             rel="noopener"
             class="youtube-project-link"
@@ -440,8 +475,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <div class="youtube-thumbnail">
               <img
-                src="${video.thumbnail}"
-                alt="${video.title.replace(/"/g, "&quot;")}"
+                src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+                alt="${title.replace(/"/g, "&quot;")}"
                 loading="lazy"
               >
 
@@ -449,11 +484,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="youtube-project-info">
-              <span class="creator-type">
-                ${index === 0 ? "LATEST EDIT" : "RECENT EDIT"}
-              </span>
+              <span class="creator-type">LATEST EDIT</span>
 
-              <h3>${video.title}</h3>
+              <h3>${title}</h3>
 
               <div class="youtube-project-meta">
                 <span>${date}</span>
@@ -465,23 +498,32 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         youtubeContainer.appendChild(card);
+
       });
 
+      if (!youtubeContainer.children.length) {
+        throw new Error("Videos could not be rendered");
+      }
+
     } catch (error) {
-      console.error("[AEVRNN] YouTube feed error:", error);
+
+      console.error(
+        "[AEVRNN] YouTube feed error:",
+        error
+      );
 
       youtubeContainer.innerHTML = `
         <div class="youtube-loading">
-          <span>YOUTUBE FEED TEMPORARILY UNAVAILABLE</span>
+          <span>YOUTUBE PROJECT FEED UNAVAILABLE</span>
 
           <a
-            href="https://www.youtube.com/@aevrnnvfx/shorts"
+            href="https://youtube.com/@aevrnnvfx"
             target="_blank"
             rel="noopener"
             class="btn btn-secondary"
             style="margin-top:20px;"
           >
-            VIEW LATEST SHORTS ↗
+            VIEW LATEST EDITS ↗
           </a>
         </div>
       `;

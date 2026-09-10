@@ -386,106 +386,44 @@ document.addEventListener("DOMContentLoaded", () => {
      button if no key is configured.
   */
 
+  const CHANNEL_HANDLE = "@aevrnnvfx";
+
   const youtubeContainer =
     document.getElementById("youtubeProjects");
 
-  async function loadYouTubeProjects() {
+  function loadYouTubeProjects() {
     if (!youtubeContainer) return;
 
+    const playlistId = "UU0GcuqyFmqg5VaWPZzZx9SQ";
+
     youtubeContainer.innerHTML = `
-      <div class="youtube-loading">
-        <div class="loader-ring"></div>
-        <span>LOADING LATEST EDITS</span>
-      </div>
-    `;
-
-    try {
-      const response = await fetch("/.netlify/functions/youtube");
-
-      if (!response.ok) {
-        throw new Error("Feed request failed");
-      }
-
-      const data = await response.json();
-
-      if (!data.videos || !data.videos.length) {
-        throw new Error("No videos found");
-      }
-
-      youtubeContainer.innerHTML = "";
-
-      data.videos.slice(0, 3).forEach((video, index) => {
-        const card = document.createElement("article");
-
-        card.className = "youtube-project reveal";
-
-        const date = video.published
-          ? new Date(video.published).toLocaleDateString(
-              undefined,
-              {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-              }
-            )
-          : "";
-
-        card.innerHTML = `
+      <div class="youtube-direct-card">
+        <div class="youtube-direct-icon">▶</div>
+        <div class="youtube-direct-content">
+          <span class="creator-type">LATEST EDITS</span>
+          <h3>AEVRNNVFX</h3>
+          <p>Watch my latest editing projects, visuals and gaming edits.</p>
           <a
-            href="${video.url}"
-            target="_blank"
-            rel="noopener"
-            class="youtube-project-link"
-          >
-
-            <div class="youtube-thumbnail">
-              <img
-                src="${video.thumbnail}"
-                alt="${video.title.replace(/"/g, "&quot;")}"
-                loading="lazy"
-              >
-
-              <div class="youtube-play">▶</div>
-            </div>
-
-            <div class="youtube-project-info">
-              <span class="creator-type">
-                ${index === 0 ? "LATEST EDIT" : "RECENT EDIT"}
-              </span>
-
-              <h3>${video.title}</h3>
-
-              <div class="youtube-project-meta">
-                <span>${date}</span>
-                <span>WATCH VIDEO ↗</span>
-              </div>
-            </div>
-
-          </a>
-        `;
-
-        youtubeContainer.appendChild(card);
-      });
-
-    } catch (error) {
-      console.error("[AEVRNN] YouTube feed error:", error);
-
-      youtubeContainer.innerHTML = `
-        <div class="youtube-loading">
-          <span>YOUTUBE FEED TEMPORARILY UNAVAILABLE</span>
-
-          <a
-            href="https://www.youtube.com/@aevrnnvfx/shorts"
+            href="https://www.youtube.com/playlist?list=${playlistId}"
             target="_blank"
             rel="noopener"
             class="btn btn-secondary"
-            style="margin-top:20px;"
           >
-            VIEW LATEST SHORTS ↗
+            VIEW LATEST EDITS ↗
           </a>
         </div>
-      `;
-    }
+      </div>
+
+      <div class="youtube-embed-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/videoseries?list=${playlistId}"
+          title="AEVRNNVFX Latest Edits"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    `;
   }
 
   loadYouTubeProjects();
