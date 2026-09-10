@@ -45,6 +45,7 @@ export default async (req, context) => {
       status: 200,
       headers: {
         "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
         "cache-control": "public, max-age=300"
       }
     });
