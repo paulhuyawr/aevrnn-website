@@ -767,3 +767,18 @@ document.addEventListener("DOMContentLoaded", () => {
   observer.observe(websiteSection);
 
 })();
+
+/* CLICKABLE PROJECT CARDS */
+document.querySelectorAll(".project-card").forEach((card) => {
+  const link = card.querySelector(".project-link");
+
+  if (link) {
+    card.style.cursor = "pointer";
+
+    card.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      window.open(link.href, "_blank", "noopener");
+    });
+  }
+});
+
