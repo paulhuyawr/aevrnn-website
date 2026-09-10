@@ -2674,3 +2674,84 @@ body.contact-modal-open {
   }
 }
 
+
+/* =====================================================
+   AEVRNN ABOUT SECTION
+   ===================================================== */
+
+.about-eyebrow {
+  margin-bottom: 18px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  opacity: .45;
+}
+
+.about-role {
+  margin-top: 22px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  opacity: .55;
+}
+
+.about-role span {
+  margin: 0 8px;
+  opacity: .4;
+}
+
+.about-intro {
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+}
+
+.about-text strong {
+  color: rgba(255,255,255,.9);
+}
+
+.about-facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.about-fact {
+  padding: 17px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  transition: .3s ease;
+}
+
+.about-fact:hover {
+  transform: translateY(-3px);
+  border-color: rgba(165,0,255,.3);
+  background: rgba(165,0,255,.04);
+}
+
+.about-fact span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  opacity: .4;
+}
+
+.about-fact strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 600px) {
+  .about-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .about-role {
+    line-height: 2;
+  }
+}
+
