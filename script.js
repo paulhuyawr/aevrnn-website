@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const response =
-        await fetch("/.netlify/functions/youtube");
+        await fetch("https://aevrnn.netlify.app/.netlify/functions/youtube");
 
       if (!response.ok) {
         throw new Error("Feed failed");
