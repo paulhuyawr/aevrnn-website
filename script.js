@@ -391,143 +391,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const youtubeContainer =
     document.getElementById("youtubeProjects");
 
-  async function loadYouTubeProjects() {
-
+  function loadYouTubeProjects() {
     if (!youtubeContainer) return;
 
+    const playlistId = "UU0GcuqyFmqg5VaWPZzZx9SQ";
+
     youtubeContainer.innerHTML = `
-      <div class="youtube-loading">
-        <div class="loader-ring"></div>
-        <span>LOADING LATEST EDITS</span>
-      </div>
-    `;
-
-    try {
-
-      const rssUrl =
-        "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ0GcuqyFmqg5VaWPZzZx9SQ";
-
-      /*
-       * Public RSS proxy.
-       * No YouTube API key is exposed in the website.
-       */
-      const proxy =
-        "https://api.allorigins.win/raw?url=" +
-        encodeURIComponent(
-          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ0GcuqyFmqg5VaWPZzZx9SQ"
-        );
-
-      const response = await fetch(proxy);
-
-      if (!response.ok) {
-        throw new Error("Feed request failed");
-      }
-
-      const xmlText = await response.text();
-
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(xmlText, "text/xml");
-
-      const entries = [...xml.querySelectorAll("entry")];
-
-      if (!entries.length) {
-        throw new Error("No videos found");
-      }
-
-      youtubeContainer.innerHTML = "";
-
-      entries.slice(0, 3).forEach((entry) => {
-
-        const videoId =
-          entry.querySelector("videoId")?.textContent?.trim();
-
-        const title =
-          entry.querySelector("title")?.textContent?.trim() ||
-          "Latest Edit";
-
-        const published =
-          entry.querySelector("published")?.textContent?.trim();
-
-        if (!videoId) return;
-
-        const date = published
-          ? new Date(published).toLocaleDateString(
-              undefined,
-              {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-              }
-            )
-          : "";
-
-        const card = document.createElement("article");
-
-        card.className = "youtube-project reveal";
-
-        card.innerHTML = `
+      <div class="youtube-direct-card">
+        <div class="youtube-direct-icon">▶</div>
+        <div class="youtube-direct-content">
+          <span class="creator-type">LATEST EDITS</span>
+          <h3>AEVRNNVFX</h3>
+          <p>Watch my latest editing projects, visuals and gaming edits.</p>
           <a
-            href="https://www.youtube.com/watch?v=${videoId}"
-            target="_blank"
-            rel="noopener"
-            class="youtube-project-link"
-          >
-
-            <div class="youtube-thumbnail">
-              <img
-                src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
-                alt="${title.replace(/"/g, "&quot;")}"
-                loading="lazy"
-              >
-
-              <div class="youtube-play">▶</div>
-            </div>
-
-            <div class="youtube-project-info">
-              <span class="creator-type">LATEST EDIT</span>
-
-              <h3>${title}</h3>
-
-              <div class="youtube-project-meta">
-                <span>${date}</span>
-                <span>WATCH VIDEO ↗</span>
-              </div>
-            </div>
-
-          </a>
-        `;
-
-        youtubeContainer.appendChild(card);
-
-      });
-
-      if (!youtubeContainer.children.length) {
-        throw new Error("Videos could not be rendered");
-      }
-
-    } catch (error) {
-
-      console.error(
-        "[AEVRNN] YouTube feed error:",
-        error
-      );
-
-      youtubeContainer.innerHTML = `
-        <div class="youtube-loading">
-          <span>YOUTUBE PROJECT FEED UNAVAILABLE</span>
-
-          <a
-            href="https://youtube.com/@aevrnnvfx"
+            href="https://www.youtube.com/playlist?list=${playlistId}"
             target="_blank"
             rel="noopener"
             class="btn btn-secondary"
-            style="margin-top:20px;"
           >
             VIEW LATEST EDITS ↗
           </a>
         </div>
-      `;
-    }
+      </div>
+
+      <div class="youtube-embed-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/videoseries?list=${playlistId}"
+          title="AEVRNNVFX Latest Edits"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    `;
   }
 
   loadYouTubeProjects();
