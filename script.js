@@ -870,3 +870,43 @@ document.querySelectorAll(".project-card").forEach((card) => {
   });
 })();
 
+
+/* =====================================================
+   ZENTRAMC SERVER IP COPY
+   ===================================================== */
+
+(() => {
+  const card = document.getElementById("serverIpCard");
+  const button = document.getElementById("copyServerIp");
+
+  if (!card || !button) return;
+
+  const originalText = "COPY IP";
+
+  button.addEventListener("click", async () => {
+    const ip = "zentramc.loca.lol";
+    const text = button.querySelector("span");
+
+    try {
+      await navigator.clipboard.writeText(ip);
+
+      button.classList.add("copied");
+      card.classList.add("show-copied");
+      text.textContent = "COPIED ✓";
+
+      setTimeout(() => {
+        button.classList.remove("copied");
+        card.classList.remove("show-copied");
+        text.textContent = originalText;
+      }, 2200);
+
+    } catch (error) {
+      text.textContent = "COPY FAILED";
+
+      setTimeout(() => {
+        text.textContent = originalText;
+      }, 1800);
+    }
+  });
+})();
+
