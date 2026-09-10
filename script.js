@@ -400,88 +400,94 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     try {
-      const response = await fetch("/.netlify/functions/youtube");
+      const response =
+        await fetch("/.netlify/functions/youtube");
 
       if (!response.ok) {
-        throw new Error("Feed request failed");
+        throw new Error("Feed failed");
       }
 
       const data = await response.json();
 
       if (!data.videos || !data.videos.length) {
-        throw new Error("No videos found");
+        throw new Error("No videos");
       }
 
       youtubeContainer.innerHTML = "";
 
-      data.videos.slice(0, 3).forEach((video, index) => {
-        const card = document.createElement("article");
+      data.videos.slice(0, 3).forEach((video) => {
 
-        card.className = "youtube-project reveal";
+        const card =
+          document.createElement("article");
 
-        const date = video.published
-          ? new Date(video.published).toLocaleDateString(
-              undefined,
-              {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-              }
-            )
-          : "";
+        card.className =
+          "youtube-project reveal";
 
         card.innerHTML = `
-          <a
-            href="${video.url}"
-            target="_blank"
-            rel="noopener"
-            class="youtube-project-link"
-          >
+          <div class="youtube-project-card">
 
-            <div class="youtube-thumbnail">
-              <img
-                src="${video.thumbnail}"
-                alt="${video.title.replace(/"/g, "&quot;")}"
-                loading="lazy"
-              >
+            <a
+              href="${video.url}"
+              target="_blank"
+              rel="noopener"
+              class="youtube-thumbnail-link"
+            >
+              <div class="youtube-thumbnail">
+                <img
+                  src="${video.thumbnail}"
+                  alt="${video.title.replace(/"/g, "&quot;")}"
+                  loading="lazy"
+                >
 
-              <div class="youtube-play">▶</div>
-            </div>
+                <div class="youtube-play">
+                  ▶
+                </div>
+              </div>
+            </a>
 
             <div class="youtube-project-info">
+
               <span class="creator-type">
-                ${index === 0 ? "LATEST EDIT" : "RECENT EDIT"}
+                AEVRNNVFX / LATEST EDIT
               </span>
 
               <h3>${video.title}</h3>
 
-              <div class="youtube-project-meta">
-                <span>${date}</span>
-                <span>WATCH VIDEO ↗</span>
-              </div>
+              <a
+                href="${video.url}"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-secondary youtube-watch-btn"
+              >
+                WATCH NOW ↗
+              </a>
+
             </div>
 
-          </a>
+          </div>
         `;
 
         youtubeContainer.appendChild(card);
       });
 
     } catch (error) {
-      console.error("[AEVRNN] YouTube feed error:", error);
+
+      console.error(
+        "[AEVRNN] YouTube feed error:",
+        error
+      );
 
       youtubeContainer.innerHTML = `
         <div class="youtube-loading">
-          <span>YOUTUBE FEED TEMPORARILY UNAVAILABLE</span>
+          <span>COULDN'T LOAD LATEST EDITS</span>
 
           <a
             href="https://www.youtube.com/@aevrnnvfx/shorts"
             target="_blank"
             rel="noopener"
             class="btn btn-secondary"
-            style="margin-top:20px;"
           >
-            VIEW LATEST SHORTS ↗
+            WATCH ON YOUTUBE ↗
           </a>
         </div>
       `;

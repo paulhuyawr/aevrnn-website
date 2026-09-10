@@ -2985,3 +2985,64 @@ body.contact-modal-open {
   }
 }
 
+
+.youtube-project-card {
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  background: rgba(255,255,255,.025);
+  transition: transform .35s ease, border-color .35s ease;
+}
+
+.youtube-project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(190,80,255,.45);
+}
+
+.youtube-thumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #09070d;
+}
+
+.youtube-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+
+.youtube-project-card:hover .youtube-thumbnail img {
+  transform: scale(1.05);
+}
+
+.youtube-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.65);
+  border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(10px);
+}
+
+.youtube-project-info {
+  padding: 24px;
+}
+
+.youtube-project-info h3 {
+  margin: 10px 0 20px;
+}
+
+.youtube-watch-btn {
+  display: inline-flex;
+}
+
