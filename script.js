@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
 
       const rssUrl =
-        "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ";
+        "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ0GcuqyFmqg5VaWPZzZx9SQ";
 
       /*
        * Public RSS proxy.
@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const proxy =
         "https://api.allorigins.win/raw?url=" +
         encodeURIComponent(
-          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0GcuqyFmqg5VaWPZzZx9SQ0GcuqyFmqg5VaWPZzZx9SQ"
         );
 
       const response = await fetch(proxy);
