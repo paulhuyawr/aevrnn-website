@@ -788,3 +788,65 @@ document.querySelectorAll(".project-card").forEach((card) => {
   }
 });
 
+
+/* =====================================================
+   AEVRNN CONTACT MODAL
+   ===================================================== */
+
+(() => {
+  const modal = document.getElementById("contactModal");
+  const openBtn = document.getElementById("openContactForm");
+  const closeBtn = document.getElementById("closeContactForm");
+  const backdrop = document.getElementById("contactBackdrop");
+  const form = document.getElementById("contactForm");
+
+  if (!modal || !openBtn || !closeBtn || !form) return;
+
+  const openModal = () => {
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("contact-modal-open");
+
+    setTimeout(() => {
+      document.getElementById("contactName")?.focus();
+    }, 350);
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("contact-modal-open");
+  };
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("active")) {
+      closeModal();
+    }
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const status = document.getElementById("contactFormStatus");
+    const button = form.querySelector(".contact-submit");
+
+    button.disabled = true;
+    button.querySelector("span").textContent = "SENDING...";
+
+    /*
+      EMAIL SERVICE WILL BE CONNECTED HERE.
+      The form UI is ready.
+    */
+
+    setTimeout(() => {
+      status.textContent = "FORM READY — EMAIL SERVICE NOT CONNECTED YET.";
+      button.disabled = false;
+      button.querySelector("span").textContent = "SEND MESSAGE";
+    }, 700);
+  });
+})();
+

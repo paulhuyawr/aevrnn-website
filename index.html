@@ -588,12 +588,13 @@
 
         <div class="contact-buttons">
 
-          <a
-            href="mailto:aevyrr@gmail.com"
+          <button
+            type="button"
             class="btn btn-primary magnetic"
+            id="openContactForm"
           >
-            Email me <b>↗</b>
-          </a>
+            Contact me <b>↗</b>
+          </button>
 
           <a
             href="https://discord.com/users/1123668181534384229"
@@ -656,6 +657,84 @@
 
   </footer>
 
+
+
+  <!-- CONTACT MODAL -->
+  <div class="contact-modal" id="contactModal" aria-hidden="true">
+    <div class="contact-modal-backdrop" id="contactBackdrop"></div>
+
+    <div class="contact-modal-box" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+
+      <button class="contact-close" id="closeContactForm" type="button" aria-label="Close">
+        ×
+      </button>
+
+      <div class="contact-modal-glow"></div>
+
+      <div class="contact-modal-header">
+        <span class="contact-modal-label">AEVRNN / CONTACT</span>
+        <h2 id="contactModalTitle">
+          Let's build
+          <span>something.</span>
+        </h2>
+        <p>
+          Tell me what you're working on and I'll get back to you.
+        </p>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+
+        <div class="contact-field">
+          <label for="contactName">YOUR NAME</label>
+          <input
+            type="text"
+            id="contactName"
+            name="name"
+            placeholder="Enter your name"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="contact-field">
+          <label for="contactEmail">EMAIL ADDRESS</label>
+          <input
+            type="email"
+            id="contactEmail"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="contact-field">
+          <label for="contactMessage">MESSAGE</label>
+          <textarea
+            id="contactMessage"
+            name="message"
+            rows="5"
+            placeholder="Tell me about your project..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="contact-submit">
+          <span>SEND MESSAGE</span>
+          <b>↗</b>
+        </button>
+
+        <div class="contact-form-status" id="contactFormStatus"></div>
+
+      </form>
+
+      <div class="contact-modal-footer">
+        <span>REPLY VIA EMAIL</span>
+        <span>aevyrr@gmail.com</span>
+      </div>
+
+    </div>
+  </div>
 
   <script src="script.js"></script>
 
